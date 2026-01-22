@@ -1,20 +1,21 @@
-import { Sequelize } from "sequelize";
+import { Sequelize } from "sequelize"; 
 import { fn, col } from "sequelize";
-import { comment, Post, UserModel } from "../../DB/model/index.js";
+import { commentModel, PostModel, UserModel } from "../../DB/model/index.js";
+// 1
 export const signup = async (inputs) => {
-  const { title, content, userid } = inputs;
-  const user = new Post({
+  const { title, content, userId } = inputs;
+  const user = new PostModel({
     title,
     content,
-    userid,
+    userId,
   });
   await user.save();
   return user;
 };
-
+//2
 export const deleteUserByID = async (inputs) => {
   const { id, userid } = inputs;
-  const post = await Post.findByPk(id);
+  const post = await PostModel.findByPk(id);
   if (!post) {
     throw new Error("Post not found", { cause: { status: 404 } });
   }
@@ -23,7 +24,7 @@ export const deleteUserByID = async (inputs) => {
       cause: { status: 403 },
     });
   }
-  await Post.destroy({
+  await PostModel.destroy({
     where: {
       id,
       userid,
@@ -31,9 +32,9 @@ export const deleteUserByID = async (inputs) => {
   });
   return post;
 };
-
+//3
 export const getAllPost = async () => {
-  const getPost = await Post.findAll({
+  const getPost = await PostModel.findAll({
     attributes: ["id", "title", "content"],
     include: [
       {
@@ -41,19 +42,20 @@ export const getAllPost = async () => {
         attributes: ["id", "name", "email"],
       }, 
       {
-        model: comment,
+        model: commentModel,
         attributes: ["id", "content"],
       },
     ],
   });
   return getPost;
 };
+//4
 export const getAllPostAndCountComment = async () => {
-  const getPost = await Post.findAll({
+  const getPost = await PostModel.findAll({
     attributes: ["id", "title", [fn("COUNT", col("Comments.id")), "commentCount"]
 ], include: [
       {
-        model: comment,
+        model: commentModel,
         attributes: []
       }
     ],

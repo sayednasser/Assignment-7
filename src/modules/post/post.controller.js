@@ -11,10 +11,10 @@ router.delete("/:id", async (req, res, next) => {
   if (!userid) {
     return res.status(400).json({ message: "userId is required in body" });
   }
-  const deleteUser = await deleteUserByID({ id, userid} );
+  const deletePost = await deleteUserByID({ id, userid} );
   return res
     .status(200)
-    .json({ message: "post deleted Successfully", deleteUser });
+    .json({ message: "post deleted Successfully" });
 });
 router.get("/details",async(req,res,next)=>{
   const getPost=await getAllPost(req.body)

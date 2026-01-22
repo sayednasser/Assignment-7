@@ -18,9 +18,9 @@ router.get("/email/" ,async (req,res,next)=>{
     return res.status(200).json({user})
 
 })
-router.get("/id/" ,async (req,res,next)=>{
-    const user =await RetrieveUser(req.query)
-    return res.status(200).json({user})
+router.get("/:id" ,async (req,res,next)=>{
+    const user =await RetrieveUser(req.params)
+    return res.status(200).json({user}) 
 
 })
 export default router

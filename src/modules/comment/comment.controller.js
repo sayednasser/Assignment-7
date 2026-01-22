@@ -1,12 +1,12 @@
 import { Router} from "express";
 import { findOrCreate,getCommentByBK,retrieveLast3Comment, retrieveAllComment, signup,updatedCommentByID } from "./comment.service.js";
-const router=Router()
+const router=Router() 
 router.post("/signup",async(req,res,next)=>{
 const user= await signup(req.body)
 return res.status(201).json({message:"comments created",user})
 });
 router.patch("/:id", async (req, res, next) => {
-  const {Id} = req.params;
+  const {id} = req.params;
   const {userId,content} = req.body; 
   if (!userId) {
     return res.status(400).json({ message: "userId is required in body" });
@@ -15,7 +15,7 @@ router.patch("/:id", async (req, res, next) => {
         return res.status(400).json({ message: "content is required in body" });
 
   }
-  const updateComment = await updatedCommentByID({ Id, userId,content} );
+  const updateComment = await updatedCommentByID({ id, userId,content} );
   return res
     .status(200)
     .json({ message: "comment updated Successfully", updateComment });

@@ -1,8 +1,8 @@
 import { BelongsTo, DataTypes, Model } from "sequelize";
 import { sequelize } from "../connection.db.js";
-export class Post extends Model {}
+export class PostModel extends Model {}
 
-Post.init(
+PostModel.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -18,6 +18,10 @@ Post.init(
       type: DataTypes.TEXT,
       allowNull: false,
     },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   },
   {
     sequelize: sequelize,
@@ -25,5 +29,3 @@ Post.init(
     paranoid: true,
   },
 );
-
-

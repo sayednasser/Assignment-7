@@ -1,4 +1,4 @@
-export const users = [];
+// export const users = [];commentModel
 import { DataTypes } from "sequelize";
 import { sequelize } from "../connection.db.js";
 

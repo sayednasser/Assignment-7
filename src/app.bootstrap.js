@@ -5,8 +5,8 @@ import { authRouter, commentRouter, postRouter, userRouter } from './modules/ind
 import express from 'express'
 async function bootstrap() {
     const app = express()
-        // connect db
-    await testConnection()
+        // connect db 
+    await testConnection() 
     await syncConnection()
     //convert buffer data
     app.use(express.json())
@@ -15,7 +15,7 @@ async function bootstrap() {
     app.use('/user', userRouter)
     app.use('/post', postRouter)
     app.use('/comment', commentRouter)
-
+ 
 
     app.get('/', (req, res) => res.send('Hello World!'))
  

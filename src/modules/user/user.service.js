@@ -1,5 +1,5 @@
 import { UserModel } from "../../DB/model/index.js";
-
+//1
 export const addNewAccount = async (inputs) => {
   const { name, email, password, role } = inputs;
   const checkEmail = await UserModel.findOne({ where: { email } });
@@ -13,6 +13,7 @@ export const addNewAccount = async (inputs) => {
   );
   await user.save({ validate: false });
 };
+//2
 export const updateProfile = async (inputs, userId) => {
   const checkID = await UserModel.update(inputs, { where: { id: userId } });
   if (!checkID[0]) {
@@ -20,6 +21,7 @@ export const updateProfile = async (inputs, userId) => {
   }
   return checkID;
 };
+//3
 export const getUserBYEmail = async (inputs) => {
   const getUserBYEmail = await UserModel.findOne({
     where: { email: inputs.email },
@@ -29,6 +31,7 @@ export const getUserBYEmail = async (inputs) => {
   }
   return getUserBYEmail;
 };
+//4
 export const RetrieveUser = async (inputs) => {
   const getUserBYId = await UserModel.findByPk(
     inputs.id,

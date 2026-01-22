@@ -1,14 +1,14 @@
 import { Op } from"sequelize";
-import { comment, Post, UserModel } from "../../DB/model/index.js";
+import { commentModel, PostModel, UserModel } from "../../DB/model/index.js";
 //1
 export const signup = async (inputs) => {
-  const added = await comment.bulkCreate(inputs, { validate: true });
+  const added = await commentModel.bulkCreate(inputs, { validate: true });
   return added;
 };
 //2
 export const updatedCommentByID = async (inputs) => {
-  const { Id, userId, content } = inputs;
-  const comments = await comment.findByPk(Id);
+  const { id, userId, content } = inputs;
+  const comments = await commentModel.findByPk(id);
   if (!comments) {
     throw new Error("comment not found", { cause: { status: 404 } });
   }
@@ -19,10 +19,10 @@ export const updatedCommentByID = async (inputs) => {
       cause: { status: 403 },
     });
   }
-  await comment.update({
-    content,
+  await comments.update({
+    content
   });
-  return comment;
+  return comments;
 };
 //3
 export const findOrCreate= async(inputs)=>{
@@ -31,40 +31,40 @@ export const findOrCreate= async(inputs)=>{
     throw new Error("userId and postId and content are required");
   }
 
-  const [commentData, created] =await comment.findOrCreate({
+  const [commentData, created] =await commentModel.findOrCreate({
     where:{content,userId,postId}
   })
-  return {comment:commentData, created} 
-} 
-// 5
-export const retrieveLast3Comment = async (postid) => {
-    if (!postid) throw new Error("postid is required");
-
-  const getData = await comment.findAll({
-    where: {postid},
-    order:[["createdAt","DESC"]],
-    limit:3
-  });
-
-  return getData;
-}
+  return {commentModel:commentData, created} 
+}; 
 //4
 export const retrieveAllComment = async (keyword) => {
-  const getData = await comment.findAndCountAll({
+  const getData = await commentModel.findAndCountAll({
     where: { content: { [Op.substring]: `%${keyword}%`} },
   });
   if (getData.rows.length === 0) throw new Error("no comment found",{cause:{status:404}});
 
   return getData;
 };
+// 5
+export const retrieveLast3Comment = async (postid) => {
+    if (!postid) throw new Error("postid is required");
+
+  const getData = await commentModel.findAll({
+    where: {postid},
+    order:[["createdAt","DESC"]],
+    limit:3
+  });
+
+  return getData;
+};
 // 6
 export const getCommentByBK = async (inputs) => {
-  const getComment = await comment.findByPk(inputs.id, {
+  const getComment = await commentModel.findByPk(inputs.id, {
     attributes: ["id", "content"],
     include: [
       { model: UserModel, attributes: ["id", "name", "email"] },
       {
-        model: Post,
+        model: PostModel,
         attributes: ["id", "title", "content"],
       },
     ],
